@@ -1,3 +1,9 @@
+/*
+ * Copyright © 2010 Chris Double <chris.double@double.co.nz>
+ *
+ * This program is made available under the ISC license.  See the
+ * accompanying file LICENSE for details.
+ */
 #include <iostream>
 #include <fstream>
 #include <cassert>
