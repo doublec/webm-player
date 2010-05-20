@@ -1,0 +1,32 @@
+webm-player
+===========
+
+This is a simple player for webm video files. Currently it plays the
+video only (no audio). I used it for testing the initial Firefox
+webm decoder/player.
+
+It is hosted on github at:
+
+  http://github.com/doublec/webm-player
+
+You will need the following third party libraries to build:
+
+  - nestegg
+  - libvpx
+  - libogg
+  - libvorbis
+
+To build:
+
+  $ git clone git://github.com/doublec/webm-player.git
+  $ cd webm-player
+  $ git submodule init
+  $ git submodule update
+  $ make
+
+Note the need to pull some submodules. This retrieves the following:
+
+  nestegg - http://github.com/kinetiknz/nestegg
+  libvpx  - http://www.webmproject.org/code/
+
+
