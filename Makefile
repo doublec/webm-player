@@ -9,23 +9,34 @@ ifeq "$(UNAME)" "Darwin"
 LIBS=-lSDLmain -framework Carbon -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Cocoa
 endif
 
-INCLUDE +=-I. -Ivp8/include
-LIBS += vp8-build/libon2_codecs.a
+INCLUDE +=-I. -Inestegg/nestegg -Inestegg/halloc -Ilibvpx/vp8 -Ilibvpx/vpx_codec -Ilibvpx/vpx_ports
+LIBS += vpx-build/libvpx.a
 
 all: webm
 
-webm.o: webm.cpp 
+vpx-build/vpx_config.h: libvpx/configure
+	mkdir -p vpx-build && cd vpx-build && ../libvpx/configure
+
+vpx-build/libvpx.a: vpx-build/vpx_config.h
+	cd vpx-build && make
+
+nestegg/src/nestegg.o: nestegg/src/nestegg.c
+	make -C nestegg
+
+webm.o: webm.cpp vpx-build/vpx_config.h
 	g++ -g -c $(INCLUDE) -o webm.o webm.cpp
 
-webm: webm.o halloc.o nestegg.o
-	g++ -g -o webm webm.o halloc.o nestegg.o -lsydneyaudio -lvorbis -logg -lSDL $(LIBS)
+webm: webm.o nestegg/halloc/src/halloc.o nestegg/src/nestegg.o vpx-build/libvpx.a
+	g++ -g -o webm webm.o nestegg/halloc/src/halloc.o nestegg/src/nestegg.o -lvorbis -logg -lSDL $(LIBS)
 
 clean: 
 	rm *.o webm
+        rm -r vpx-build
+        make -C nestegg clean
 
-halloc.o: libnestegg/src/halloc.c
-	gcc -g -c $(INCLUDE) -o halloc.o libnestegg/src/halloc.c
+nestegg/halloc/src/halloc.o: nestegg/halloc/src/halloc.c
+	gcc -g -c $(INCLUDE) -o halloc.o nestegg/halloc/src/halloc.c
 
-nestegg.o: libnestegg/src/nestegg.c
-	gcc -g -c $(INCLUDE) -o nestegg.o libnestegg/src/nestegg.c
+nestegg.o: nestegg/src/nestegg.c
+	gcc -g -c $(INCLUDE) -o nestegg.o nestegg/src/nestegg.c
 
