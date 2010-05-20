@@ -204,8 +204,8 @@ void play_webm(char const* name) {
             r = SDL_Init(SDL_INIT_VIDEO);
             assert(r == 0);
 
-            surface = SDL_SetVideoMode(vparams.width,
-	    	                       vparams.height,
+            surface = SDL_SetVideoMode(vparams.display_width,
+                                      vparams.display_height,
 			               32,
 			               SDL_SWSURFACE);
             assert(surface);
@@ -221,8 +221,8 @@ void play_webm(char const* name) {
           SDL_Rect rect;
           rect.x = 0;
           rect.y = 0;
-          rect.w = vparams.width;
-          rect.h = vparams.height;
+          rect.w = vparams.display_width;
+          rect.h = vparams.display_height;
     
           SDL_LockYUVOverlay(overlay);
           for (int y=0; y < img->d_h; ++y)
