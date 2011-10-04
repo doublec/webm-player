@@ -187,6 +187,12 @@ void play_webm(char const* name) {
         r = nestegg_packet_data(packet, j, &data, &length);
         assert(r == 0);
 
+        vpx_codec_stream_info_t si;
+        memset(&si, 0, sizeof(si));
+        si.sz = sizeof(si);
+        vpx_codec_peek_stream_info(interface, data, length, &si);
+        cout << "keyframe: " << (si.is_kf ? "yes" : "no") << " ";
+
         cout << "length: " << length << " ";
         /* Decode the frame */                                               
         if(vpx_codec_decode(&codec, data, length, NULL, 0)) {
