@@ -9,7 +9,7 @@ ifeq "$(UNAME)" "Darwin"
 LIBS=-lSDLmain -framework Carbon -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Cocoa
 endif
 
-INCLUDE +=-I. -Inestegg/include -Inestegg/halloc -Ilibvpx/vp8 -Ilibvpx/vpx_codec -Ilibvpx/vpx_ports
+INCLUDE +=-I. -Inestegg/include -Inestegg/halloc -Ilibvpx/vpx -Ilibvpx/vpx_codec -Ilibvpx/vpx_ports
 LIBS += vpx-build/libvpx.a
 
 all: webm
