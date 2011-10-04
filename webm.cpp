@@ -11,7 +11,7 @@
 extern "C" {
 #include "vpx_decoder.h"
 #include "vp8dx.h"
-#include "nestegg.h"
+#include "nestegg/nestegg.h"
 }
 #include <SDL/SDL.h>
 
@@ -127,7 +127,8 @@ void play_webm(char const* name) {
             
       r = nestegg_track_video_params(ne, i, &vparams);
       assert(r == 0);
-      cout << vparams.width << "x" << vparams.height << " ";
+      cout << vparams.width << "x" << vparams.height 
+           << " (d: " << vparams.display_width << "x" << vparams.display_height << ")";
     }
     if (type == NESTEGG_TRACK_AUDIO) {
       nestegg_audio_params params;

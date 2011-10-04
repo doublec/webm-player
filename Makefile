@@ -9,7 +9,7 @@ ifeq "$(UNAME)" "Darwin"
 LIBS=-lSDLmain -framework Carbon -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Cocoa
 endif
 
-INCLUDE +=-I. -Inestegg/nestegg -Inestegg/halloc -Ilibvpx/vp8 -Ilibvpx/vpx_codec -Ilibvpx/vpx_ports
+INCLUDE +=-I. -Inestegg/include -Inestegg/halloc -Ilibvpx/vp8 -Ilibvpx/vpx_codec -Ilibvpx/vpx_ports
 LIBS += vpx-build/libvpx.a
 
 all: webm
@@ -20,7 +20,10 @@ vpx-build/vpx_config.h: libvpx/configure
 vpx-build/libvpx.a: vpx-build/vpx_config.h
 	cd vpx-build && make
 
-nestegg/src/nestegg.o: nestegg/src/nestegg.c
+nestegg/configure: nestegg/configure.ac
+	cd nestegg && autoreconf --install && ./configure && cd ..
+
+nestegg/src/nestegg.o: nestegg/configure nestegg/src/nestegg.c
 	make -C nestegg
 
 webm.o: webm.cpp vpx-build/vpx_config.h
