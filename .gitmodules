@@ -3,4 +3,4 @@
 	url = http://github.com/kinetiknz/nestegg.git
 [submodule "libvpx"]
 	path = libvpx
-	url = git://review.webmproject.org/libvpx.git
+	url = http://git.chromium.org/webm/libvpx.git

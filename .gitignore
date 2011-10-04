@@ -1,3 +1,8 @@
 vpx-build/
 webm
 webm.o
+nestegg/halloc/src/halloc.o
+nestegg/src/nestegg.o
+nestegg/test
+nestegg/test.o
+halloc.o
