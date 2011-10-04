@@ -26,7 +26,7 @@ nestegg/configure: nestegg/configure.ac
 nestegg/src/nestegg.o: nestegg/configure nestegg/src/nestegg.c
 	make -C nestegg
 
-webm.o: webm.cpp vpx-build/vpx_config.h
+webm.o: webm.cpp vpx-build/libvpx.a nestegg/src/nestegg.o
 	g++ -g -c $(INCLUDE) -o webm.o webm.cpp
 
 webm: webm.o nestegg/halloc/src/halloc.o nestegg/src/nestegg.o vpx-build/libvpx.a
