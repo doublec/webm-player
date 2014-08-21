@@ -17,8 +17,6 @@ extern "C" {
 
 using namespace std;
 
-#define interface (&vpx_codec_vp8_dx_algo)
-
 static unsigned int mem_get_le32(const unsigned char *mem) {
     return (mem[3] << 24)|(mem[2] << 16)|(mem[1] << 8)|(mem[0]);
 }
@@ -101,7 +99,7 @@ void play_webm(char const* name) {
   ne_io.tell = ifstream_tell;
   ne_io.userdata = (void*)&infile;
 
-  r = nestegg_init(&ne, ne_io, NULL /* logger */);
+  r = nestegg_init(&ne, ne_io, NULL /* logger */, -1);
   assert(r == 0);  
 
   uint64_t duration = 0;
@@ -118,11 +116,13 @@ void play_webm(char const* name) {
   vparams.width = 0;
   vparams.height = 0;
 
+  vpx_codec_iface_t* interface;
   for (int i=0; i < ntracks; ++i) {
     int id = nestegg_track_codec_id(ne, i);
     assert(id >= 0);
     int type = nestegg_track_type(ne, i);
     cout << "Track " << i << " codec id: " << id << " type " << type << " ";
+    interface = id == NESTEGG_CODEC_VP9 ? &vpx_codec_vp9_dx_algo : &vpx_codec_vp8_dx_algo;
     if (type == NESTEGG_TRACK_VIDEO) {
             
       r = nestegg_track_video_params(ne, i, &vparams);
@@ -194,9 +194,10 @@ void play_webm(char const* name) {
         cout << "keyframe: " << (si.is_kf ? "yes" : "no") << " ";
 
         cout << "length: " << length << " ";
-        /* Decode the frame */                                               
-        if(vpx_codec_decode(&codec, data, length, NULL, 0)) {
-          cerr << "Failed to decode frame" << endl;
+        /* Decode the frame */                             
+        vpx_codec_err_t e = vpx_codec_decode(&codec, data, length, NULL, 0);
+        if (e) {
+          cerr << "Failed to decode frame. error: " << e << endl;
           return;
         }
        vpx_codec_iter_t  iter = NULL;
