@@ -33,7 +33,7 @@ webm: webm.o nestegg/halloc/src/halloc.o nestegg/src/nestegg.o vpx-build/libvpx.
 	g++ -g -o webm webm.o nestegg/halloc/src/halloc.o nestegg/src/nestegg.o -lvorbis -logg -lSDL $(LIBS)
 
 clean: 
-	rm *.o webm && rm -r vpx-build && make -C nestegg clean
+	rm -f *.o webm && rm -r vpx-build && make -C nestegg clean
 
 nestegg/halloc/src/halloc.o: nestegg/halloc/src/halloc.c
 	gcc -g -c $(INCLUDE) -o halloc.o nestegg/halloc/src/halloc.c
